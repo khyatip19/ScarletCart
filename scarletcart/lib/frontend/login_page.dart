@@ -15,9 +15,9 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text(
-          'Flutter Demo Home Page'
-        ),
+        // title: const Text(
+        //   'Flutter Demo Home Page'
+        // ),
       ),
       body: 
       // Container(

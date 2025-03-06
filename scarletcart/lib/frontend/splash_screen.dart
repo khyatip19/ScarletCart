@@ -6,16 +6,16 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 235, 253, 242),
+      backgroundColor: const Color.fromARGB(255, 235, 253, 242),
       appBar: AppBar(
-        title: const Text('Second Page'),
+        // title: const Text('Second Page'),
       ),
     body: Center(
       child: Container(
         width: 352,
         height: 116,
         decoration: ShapeDecoration(
-          color: Color(0xFFFBB8A1),
+          color: const Color(0xFFFBB8A1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
           ),
@@ -29,7 +29,7 @@ class SplashScreen extends StatelessWidget {
                 width: 115.56,
                 height: 65,
                 decoration: ShapeDecoration(
-                  image: DecorationImage(
+                  image: const DecorationImage(
                     image: NetworkImage("https://weston.guide/wp-content/uploads/2020/04/Bravo-Supermarkets.jpg"),
                     fit: BoxFit.fill,
                   ),
