@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scarletcart/frontend/splash_screen.dart';
+import 'package:scarletcart/frontend/homepage.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -13,7 +13,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     // var screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
+      appBar: 
+      AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // title: const Text(
         //   'Flutter Demo Home Page'
@@ -135,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                 // Navigate to the SecondPage when the "Log In" button is tapped
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SplashScreen()),
+                    MaterialPageRoute(builder: (context) => const HomePage()),
                   );
                 },
                 child: Container(

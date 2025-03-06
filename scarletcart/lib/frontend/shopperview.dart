@@ -8,7 +8,7 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 235, 253, 242),
       appBar: AppBar(
-        // title: const Text('Second Page'),
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
     body: Center(
       child: Container(
@@ -77,7 +77,6 @@ class SplashScreen extends StatelessWidget {
         ),
       ),
     ),
-        
     );
   }
 }
