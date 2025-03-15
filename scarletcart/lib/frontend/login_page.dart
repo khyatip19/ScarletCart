@@ -1,29 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:scarletcart/frontend/homepage.dart';
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // Google Sign-In Method
+  Future<User?> signInWithGoogle() async {
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) return null; // User canceled login
+
+      // Obtain auth details from the request
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in to Firebase
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      return userCredential.user;
+    } catch (e) {
+      print("Google Sign-In Error: $e");
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // var screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: 
-      AppBar(
+      appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // title: const Text(
-        //   'Flutter Demo Home Page'
-        // ),
       ),
-      body: 
-      // Container(
-      //   padding: EdgeInsets.all(10))
-      Container(
+      body: Container(
         width: 390,
         height: 844,
         clipBehavior: Clip.antiAlias,
@@ -36,84 +56,17 @@ class _LoginPageState extends State<LoginPage> {
         child: Stack(
           children: [
             Positioned(
-              left: 7.50,
-              top: -220,
-              child: Container(
-                width: 375,
-                height: 44,
-                clipBehavior: Clip.antiAlias,
-                decoration: const BoxDecoration(),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: 0,
-                      top: 0,
-                      child: Container(width: 375, height: 30),
-                    ),
-                    const Positioned(
-                      left: 292,
-                      top: 16,
-                      child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                          ],
-                        ),
-                      ),
-                    Positioned(
-                      left: 298,
-                      top: 8,
-                      child: Container(width: 6, height: 6),
-                    ),
-                    Positioned(
-                      left: 21,
-                      top: 12,
-                      child: Container(
-                        width: 54,
-                        height: 21,
-                        padding: const EdgeInsets.only(top: 3, left: 11, right: 10, bottom: 3),
-                        clipBehavior: Clip.antiAlias,
-                        decoration: ShapeDecoration(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 33,
-                              height: 15,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
               left: 64,
               top: 202,
               child: Container(
-                width: 390 - 128, // Adjust width to account for left and right padding
+                width: 390 - 128,
                 padding: const EdgeInsets.only(top: 7, bottom: 6),
                 child: const Row(
-                  mainAxisSize: MainAxisSize.max, // Use max to fill available width
-                  mainAxisAlignment: MainAxisAlignment.center, // Center horizontally
-                  crossAxisAlignment: CrossAxisAlignment.center, // Center vertically
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                     Text(
+                    Text(
                       'Welcome!',
                       style: TextStyle(
                         color: Color(0xFF174A2C),
@@ -128,12 +81,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+            // Normal Log In Button
             Positioned(
               left: 55,
               top: 584,
               child: GestureDetector(
                 onTap: () {
-                // Navigate to the SecondPage when the "Log In" button is tapped
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const HomePage()),
@@ -142,37 +95,59 @@ class _LoginPageState extends State<LoginPage> {
                 child: Container(
                   width: 280,
                   height: 60,
-                  padding: const EdgeInsets.symmetric(horizontal: 93, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 93, vertical: 10),
                   decoration: ShapeDecoration(
-                  color: const Color(0xFF174A2C),
-                  shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Log In',
-                    style: TextStyle(
-                      color: Color(0xFFEBFDF2),
-                      fontSize: 32,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w400,
+                    color: const Color(0xFF174A2C),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                ],
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Log In',
+                        style: TextStyle(
+                          color: Color(0xFFEBFDF2),
+                          fontSize: 32,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+            // Google Sign-In Button
+            Positioned(
+              top: 660,
+              left: 0,
+              right: 0,
+              child: Align(
+                alignment: Alignment.center,
+                child: SignInButton(
+                  Buttons.Google,
+                  text: "Sign in with Google",
+                  onPressed: () async {
+                    User? user = await signInWithGoogle();
+                    if (user != null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
-
-
