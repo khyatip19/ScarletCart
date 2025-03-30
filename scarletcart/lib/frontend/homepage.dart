@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:scarletcart/frontend/shopperview.dart';
-
 void main() {
   runApp(const MyApp());
 }
