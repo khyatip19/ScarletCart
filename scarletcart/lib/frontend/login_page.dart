@@ -75,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+            // Normal Log In Button
             Positioned(
               left: 55,
               top: 584,
