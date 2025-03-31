@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:scarletcart/frontend/cartPage.dart'; // Import the ShoppingCartScreen
+import 'package:scarletcart/frontend/cart_page.dart'; // Import the ShoppingCartScreen
 
 class OrderTracking extends StatelessWidget {
+  const OrderTracking({super.key});
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final double refWidth = 393; // width of iphone 16
-    final double refHeight = 852; // height of iphone 16
+    const double refWidth = 393; // width of iphone 16
+    const double refHeight = 852; // height of iphone 16
     final double widthScale = screenSize.width / refWidth;
     final double heightScale = screenSize.height / refHeight;
     final double scaleFactor =

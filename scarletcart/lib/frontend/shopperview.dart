@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:scarletcart/frontend/frequent_purchased_card.dart';
-import 'shopperHomeDropdown.dart'; // dropdown for pickup locations
-import 'package:scarletcart/frontend/orderTracking.dart'; // Import HomePage
+import 'shopper_home_dropdown.dart'; // dropdown for pickup locations
+import 'package:scarletcart/frontend/order_tracking.dart'; // Import HomePage
 import 'package:scarletcart/frontend/navbar.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -23,8 +23,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final double refWidth = 393; //width of iphone 16
-    final double refHeight = 852; //height of iphone 16
+    const double refWidth = 393; //width of iphone 16
+    const double refHeight = 852; //height of iphone 16
     final double widthScale = screenSize.width / refWidth;
     final double heightScale = screenSize.height / refHeight;
     final double scaleFactor =
@@ -128,7 +128,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         child: Text(
                           'Delivery To',
                           style: TextStyle(
-                            color: Color(0xFF174A2C),
+                            color: const Color(0xFF174A2C),
                             fontSize: 14 * scaleFactor,
                             fontFamily: 'Outfit',
                             fontWeight: FontWeight.w600,
@@ -174,11 +174,11 @@ class _SplashScreenState extends State<SplashScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Distribute cards evenly
                           children: [
-                            Expanded( // Allow cards to take available space
+                            const Expanded( // Allow cards to take available space
                               child: FrequentPurchasedCard(),
                             ),
                             SizedBox(width: 10 * scaleFactor), // Add some spacing between cards
-                            Expanded(
+                            const Expanded(
                               child: FrequentPurchasedCard(),
                             ),
                           ],
@@ -187,11 +187,11 @@ class _SplashScreenState extends State<SplashScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Expanded(
+                            const Expanded(
                               child: FrequentPurchasedCard(),
                             ),
                             SizedBox(width: 10 * scaleFactor),
-                            Expanded(
+                            const Expanded(
                               child: FrequentPurchasedCard(),
                             ),
                           ],
@@ -215,7 +215,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   // Navigate to the HomePage when the "Go to Cart" button is tapped
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => OrderTracking()),
+                    MaterialPageRoute(builder: (context) => const OrderTracking()),
                   );
                 },
                 child: Container(

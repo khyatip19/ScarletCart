@@ -22,8 +22,8 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final double refWidth = 393; //width of iphone 16
-    final double refHeight = 852; //height of iphone 16
+    const double refWidth = 393; //width of iphone 16
+    const double refHeight = 852; //height of iphone 16
     final double widthScale = screenSize.width / refWidth;
     final double heightScale = screenSize.height / refHeight;
     final double scaleFactor =

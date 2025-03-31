@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:scarletcart/frontend/orderTracking.dart'; // Import HomePage
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({Key? key, required this.selectedIndex, required this.onItemTapped}) : super(key: key);
+  const BottomNavBar({super.key, required this.selectedIndex, required this.onItemTapped});
   final int selectedIndex;
   final Function(int) onItemTapped;
 

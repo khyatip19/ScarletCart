@@ -6,11 +6,11 @@ class CartItem extends StatefulWidget {
   final void Function(CartItem) onRemove; // Callback function
 
   const CartItem({
-    Key? key,
+    super.key,
     required this.name,
     required this.price,
     required this.onRemove,
-  }) : super(key: key);
+  });
 
   @override
   _CartItemState createState() => _CartItemState();

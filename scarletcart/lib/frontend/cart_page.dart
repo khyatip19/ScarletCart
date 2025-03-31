@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scarletcart/frontend/cartItem.dart';
+import 'package:scarletcart/frontend/cart_item.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
   @override

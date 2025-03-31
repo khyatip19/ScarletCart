@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "437828100584",
+    "project_id": "logintutorial-a7f03",
+    "storage_bucket": "logintutorial-a7f03.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437828100584:android:668fb29d966203c604c45d",
+        "android_client_info": {
+          "package_name": "com.example.scarletcart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "437828100584-t11c1b4ru9g6o025h9v938b7q4rra2ij.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvHoy4Vi9w-Bu0adN8G2_TWDNVNvnw_I0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "437828100584-t11c1b4ru9g6o025h9v938b7q4rra2ij.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "437828100584-n8aapprmoo2a6i9vnl36d908sl46f9d3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.scarletcart"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

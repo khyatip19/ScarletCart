@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scarletcart/frontend/productInfo.dart';
+import 'package:scarletcart/frontend/product_info.dart';
 
 class FrequentPurchasedCard extends StatelessWidget {
   const FrequentPurchasedCard({super.key});
@@ -7,8 +7,8 @@ class FrequentPurchasedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final double refWidth = 393; //width of iphone 16
-    final double refHeight = 852; //height of iphone 16
+    const double refWidth = 393; //width of iphone 16
+    const double refHeight = 852; //height of iphone 16
     final double widthScale = screenSize.width / refWidth;
     final double heightScale = screenSize.height / refHeight;
     final double scaleFactor =
@@ -22,7 +22,7 @@ class FrequentPurchasedCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ProductDetailsPage()), // Navigate to Page
+            MaterialPageRoute(builder: (context) => const ProductDetailsPage()), // Navigate to Page
           );
         },
         child: Container(
