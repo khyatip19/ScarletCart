@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:scarletcart/frontend/shopperview.dart';
-
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           body: HomePage(),
@@ -20,7 +19,7 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +30,10 @@ class HomePage extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Color(0xFFEBFDF2),
       ),
-      child: Stack(
+      child: const Stack(
         children: [
-          const Positioned(left: 7.50, top: -220, child: TopBar()),
-          const Positioned(left: 7.50, top: 1030, child: BottomNavigationBarIndicator()),
+          Positioned(left: 7.50, top: -220, child: TopBar()),
+          Positioned(left: 7.50, top: 1030, child: BottomNavigationBarIndicator()),
           Positioned(left: 12, top: 132, child: DriverButton()),
           Positioned(left: 19, top: 464, child: ShopperButton()),
         ],
@@ -44,7 +43,7 @@ class HomePage extends StatelessWidget {
 }
 
 class TopBar extends StatelessWidget {
-  const TopBar({Key? key}) : super(key: key);
+  const TopBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +59,14 @@ class TopBar extends StatelessWidget {
             top: 0,
             child: SizedBox(width: 375, height: 30),
           ),
-          Positioned(
+          const Positioned(
             left: 292,
             top: 16,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
+              children: [
                 FlutterLogoContainer(width: 20, height: 14),
                 SizedBox(width: 4),
                 FlutterLogoContainer(width: 16, height: 14),
@@ -94,11 +93,11 @@ class TopBar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              child: Row(
+              child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
+                children: [
                   SizedBox(), // Removed the unnecessary Column
                 ],
               ),
@@ -111,7 +110,7 @@ class TopBar extends StatelessWidget {
 }
 
 class BottomNavigationBarIndicator extends StatelessWidget {
-  const BottomNavigationBarIndicator({Key? key}) : super(key: key);
+  const BottomNavigationBarIndicator({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -126,19 +125,19 @@ class BottomNavigationBarIndicator extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(),
-      child: Row(
+      child: const Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
+          SizedBox(
             width: 134,
             height: 5,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 SizedBox(
                   width: 134,
                   height: 5,
@@ -158,7 +157,7 @@ class BottomNavigationBarIndicator extends StatelessWidget {
 }
 
 class DriverButton extends StatelessWidget {
-  const DriverButton({Key? key}) : super(key: key);
+  const DriverButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +199,7 @@ class DriverButton extends StatelessWidget {
 }
 
 class ShopperButton extends StatelessWidget {
-  const ShopperButton({Key? key}) : super(key: key);
+  const ShopperButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +211,7 @@ class ShopperButton extends StatelessWidget {
           );
         // print('Shopper button tapped!');
       },
-      child: Container(
+      child: SizedBox(
         width: 352,
         height: 276,
         child: Row(
@@ -249,7 +248,7 @@ class FlutterLogoContainer extends StatelessWidget {
   final double width;
   final double height;
 
-  const FlutterLogoContainer({Key? key, required this.width, required this.height}) : super(key: key);
+  const FlutterLogoContainer({super.key, required this.width, required this.height});
 
   @override
   Widget build(BuildContext context) {

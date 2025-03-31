@@ -12,14 +12,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // Google Sign-In Method
   Future<User?> signInWithGoogle() async {
     try {
-      // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) return null; // User canceled login
-
-      // Obtain auth details from the request
+      if (googleUser == null) return null;
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
       final OAuthCredential credential = GoogleAuthProvider.credential(
@@ -27,12 +23,10 @@ class _LoginPageState extends State<LoginPage> {
         idToken: googleAuth.idToken,
       );
 
-      // Sign in to Firebase
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
       return userCredential.user;
     } catch (e) {
-      print("Google Sign-In Error: $e");
       return null;
     }
   }
