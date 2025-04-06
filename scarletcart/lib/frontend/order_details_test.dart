@@ -1,27 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<void> confirmOrderReceived(String orderId) async {
+Future<void> updateOrderStatus(String orderId, String newStatus) async {
   try {
-    await FirebaseFirestore.instance.collection('orders').doc(orderId).update({
-      'customerConfirmed': true,
-      'customerConfirmedTimestamp': FieldValue.serverTimestamp(),
-      'status': "Completed"
-    });
+    await FirebaseFirestore.instance
+        .collection('orders')
+        .doc(orderId)
+        .update({'status': newStatus});
   } catch (e) {
-    print("Error confirming order receipt: $e");
+    print("Error updating order status: $e");
   }
 }
 
-class CustomerOrderDetailsScreen extends StatelessWidget {
+Future<void> markOrderAsDelivered(String orderId) async {
+  try {
+    await FirebaseFirestore.instance.collection('orders').doc(orderId).update({
+      'status': 'Delivered',  // Changed from 'Completed' to 'Delivered'
+      'driverConfirmed': true,
+      'deliveryCompletedTimestamp': FieldValue.serverTimestamp(),
+    });
+  } catch (e) {
+    print("Error marking order as delivered: $e");
+  }
+}
+
+class DriverOrderDetailsScreen extends StatelessWidget {
   final String orderId;
 
-  const CustomerOrderDetailsScreen({super.key, required this.orderId});
+  const DriverOrderDetailsScreen({super.key, required this.orderId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Order Details")),
+      appBar: AppBar(title: const Text("Driver Order Details")),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection('orders')
@@ -63,11 +74,9 @@ class CustomerOrderDetailsScreen extends StatelessWidget {
 
           // Get order items (handling as an array)
           List<dynamic> orderItems = orderData['orderDetails'] ?? [];
-          bool isDelivered = orderData['status'] == 'Delivered';
-          bool isConfirmedByCustomer = orderData['customerConfirmed'] == true;
-          
-          // Show confirmation button only if order is delivered but not yet confirmed
-          bool showConfirmButton = isDelivered && !isConfirmedByCustomer;
+          // Updated to check for 'Delivered' status
+          bool isDelivered = orderData['status'] == 'Delivered' &&
+              orderData['driverConfirmed'] == true;
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
@@ -96,40 +105,16 @@ class CustomerOrderDetailsScreen extends StatelessWidget {
                               color: _getStatusColor(orderData['status']),
                             )),
                         const SizedBox(height: 4),
-                        if (isDelivered)
-                          Text(
-                              "Delivery Confirmed: ${orderData['customerConfirmed'] == true ? 'Yes' : 'No'}",
-                              style: const TextStyle(fontSize: 16)),
+                        Text(
+                            "Driver Confirmed: ${orderData['driverConfirmed'] == true ? 'Yes' : 'No'}",
+                            style: const TextStyle(fontSize: 16)),
+                        Text(
+                            "Customer Confirmed: ${orderData['customerConfirmed'] == true ? 'Yes' : 'No'}",
+                            style: const TextStyle(fontSize: 16)),
                       ],
                     ),
                   ),
                 ),
-
-                // Display confirmation message at the top if confirmed
-                if (isConfirmedByCustomer)
-                  Card(
-                    margin: const EdgeInsets.only(top: 16),
-                    color: Colors.green.shade50,
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          Icon(Icons.check_circle, color: Colors.green),
-                          SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              "You have confirmed receipt of this order.",
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
 
                 const SizedBox(height: 20),
                 const Text(
@@ -162,6 +147,33 @@ class CustomerOrderDetailsScreen extends StatelessWidget {
                     },
                   ),
 
+                if (orderData['customerID'] != null) ...[
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Customer Information",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Customer ID: ${orderData['customerID']}",
+                              style: const TextStyle(fontSize: 16)),
+                          if (orderData['customerAddress'] != null)
+                            Text("Address: ${orderData['customerAddress']}",
+                                style: const TextStyle(fontSize: 16)),
+                          if (orderData['customerPhone'] != null)
+                            Text("Phone: ${orderData['customerPhone']}",
+                                style: const TextStyle(fontSize: 16)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+
                 if (orderData['deliveryTimestamp'] != null) ...[
                   const SizedBox(height: 20),
                   const Text(
@@ -180,62 +192,9 @@ class CustomerOrderDetailsScreen extends StatelessWidget {
                               style: const TextStyle(fontSize: 16)),
                           if (orderData['deliveryCompletedTimestamp'] != null)
                             Text(
-                                "Delivered On: ${_formatTimestamp(orderData['deliveryCompletedTimestamp'])}",
+                                "Actual Delivery: ${_formatTimestamp(orderData['deliveryCompletedTimestamp'])}",
                                 style: const TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold)),
-                          if (orderData['customerConfirmedTimestamp'] != null)
-                            Text(
-                                "Received On: ${_formatTimestamp(orderData['customerConfirmedTimestamp'])}",
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold, color: Colors.green)),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-
-                if (orderData['storeInfo'] != null || orderData['storeName'] != null) ...[
-                  const SizedBox(height: 20),
-                  const Text(
-                    "Store Information",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (orderData['storeName'] != null)
-                            Text("Store: ${orderData['storeName']}",
-                                style: const TextStyle(fontSize: 16)),
-                          if (orderData['storeAddress'] != null)
-                            Text("Address: ${orderData['storeAddress']}",
-                                style: const TextStyle(fontSize: 16)),
-                          if (orderData['storePhone'] != null)
-                            Text("Phone: ${orderData['storePhone']}",
-                                style: const TextStyle(fontSize: 16)),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-
-                if (orderData['totalAmount'] != null) ...[
-                  const SizedBox(height: 20),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("Total Amount:",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold)),
-                          Text("\$${orderData['totalAmount'].toStringAsFixed(2)}",
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ),
@@ -244,25 +203,26 @@ class CustomerOrderDetailsScreen extends StatelessWidget {
 
                 const SizedBox(height: 30),
 
-                // Customer confirmation button (only shown if order is delivered but not confirmed)
-                if (showConfirmButton)
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () => _confirmReceipt(context, orderId),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      child: const Text(
-                        "Confirm Order Received",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
+                // Delivery confirmation button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: isDelivered
+                        ? null // Disable if already delivered
+                        : () => _confirmDelivery(context, orderId),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isDelivered ? Colors.grey : Colors.green,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    child: Text(
+                      isDelivered ? "Order Delivered" : "Mark as Delivered",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: isDelivered ? Colors.black54 : Colors.white,
                       ),
                     ),
                   ),
+                ),
               ],
             ),
           );
@@ -271,14 +231,14 @@ class CustomerOrderDetailsScreen extends StatelessWidget {
     );
   }
 
-  void _confirmReceipt(BuildContext context, String orderId) {
+  void _confirmDelivery(BuildContext context, String orderId) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text("Confirm Receipt"),
+          title: const Text("Confirm Delivery"),
           content: const Text(
-              "Have you received all items in your order? This will complete the order process."),
+              "Are you sure you want to mark this order as delivered?"),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
@@ -302,7 +262,7 @@ class CustomerOrderDetailsScreen extends StatelessWidget {
                         children: [
                           CircularProgressIndicator(),
                           SizedBox(width: 20),
-                          Text("Confirming receipt..."),
+                          Text("Updating order..."),
                         ],
                       ),
                     );
@@ -310,7 +270,7 @@ class CustomerOrderDetailsScreen extends StatelessWidget {
                 );
 
                 // Update the order
-                confirmOrderReceived(orderId).then((_) {
+                markOrderAsDelivered(orderId).then((_) {
                   // Pop loading dialog if app is still running
                   if (scaffoldContext.mounted) {
                     // Find the current navigator context to pop the dialog
@@ -320,7 +280,7 @@ class CustomerOrderDetailsScreen extends StatelessWidget {
                     ScaffoldMessenger.of(scaffoldContext).showSnackBar(
                       const SnackBar(
                         content:
-                            Text("Thank you for confirming receipt of your order!"),
+                            Text("Order marked as delivered successfully!"),
                         backgroundColor: Colors.green,
                       ),
                     );
@@ -332,7 +292,7 @@ class CustomerOrderDetailsScreen extends StatelessWidget {
 
                     ScaffoldMessenger.of(scaffoldContext).showSnackBar(
                       SnackBar(
-                        content: Text("Failed to confirm order: $error"),
+                        content: Text("Failed to update order: $error"),
                         backgroundColor: Colors.red,
                       ),
                     );
@@ -340,7 +300,7 @@ class CustomerOrderDetailsScreen extends StatelessWidget {
                 });
               },
               child:
-                  const Text("Confirm Receipt", style: TextStyle(color: Colors.green)),
+                  const Text("Confirm", style: TextStyle(color: Colors.green)),
             ),
           ],
         );
@@ -352,13 +312,9 @@ class CustomerOrderDetailsScreen extends StatelessWidget {
     switch (status?.toLowerCase()) {
       case 'pending':
         return Colors.orange;
-      case 'processing':
-        return Colors.amber;
-      case 'shipped':
-        return Colors.blue;
-      case 'delivered':
-        return Colors.green;
       case 'completed':
+        return Colors.green;
+      case 'delivered': // Added color for 'delivered' status
         return Colors.green;
       case 'cancelled':
         return Colors.red;

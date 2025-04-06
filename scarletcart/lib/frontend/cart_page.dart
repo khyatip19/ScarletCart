@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:scarletcart/frontend/cart_item.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
+  const ShoppingCartScreen({super.key});
+
   @override
   _ShoppingCartScreenState createState() => _ShoppingCartScreenState();
 }

@@ -35,40 +35,43 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
       child: Container(
         alignment: Alignment.center,
         color: const Color.fromARGB(255, 235, 253, 242),
-        child: DropdownButton<String>(
-          value: dropdownValue,
-          onChanged: (String? value) {
-            // This is called when the user selects an item.
-            setState(() {
-              dropdownValue = value!;
-            });
-          },
-          style: TextStyle(
-            color: const Color.fromARGB(255, 23, 74, 44),
-            fontSize: 14 * scaleFactor,
-            fontFamily: 'Outfit',
-            fontWeight: FontWeight.w600,
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: DropdownButton<String>(
+            value: dropdownValue,
+            onChanged: (String? value) {
+              // This is called when the user selects an item.
+              setState(() {
+                dropdownValue = value!;
+              });
+            },
+            style: TextStyle(
+              color: const Color.fromARGB(255, 23, 74, 44),
+              fontSize: 14 * scaleFactor,
+              fontFamily: 'Outfit',
+              fontWeight: FontWeight.w600,
+            ),
+            selectedItemBuilder: (BuildContext context) {
+              // This is the widget that will be shown when you select an item.
+              // Here custom text style, alignment and layout size can be applied
+              // to selected item string.
+              return options.map((String value) {
+                return Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(dropdownValue,
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 23, 74, 44),
+                        fontSize: 14 * scaleFactor,
+                        fontFamily: 'Outfit',
+                        fontWeight: FontWeight.w600,
+                      )),
+                );
+              }).toList();
+            },
+            items: options.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(value: value, child: Text(value));
+            }).toList(),
           ),
-          selectedItemBuilder: (BuildContext context) {
-            // This is the widget that will be shown when you select an item.
-            // Here custom text style, alignment and layout size can be applied
-            // to selected item string.
-            return options.map((String value) {
-              return Align(
-                alignment: Alignment.centerLeft,
-                child: Text(dropdownValue,
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 23, 74, 44),
-                      fontSize: 14 * scaleFactor,
-                      fontFamily: 'Outfit',
-                      fontWeight: FontWeight.w600,
-                    )),
-              );
-            }).toList();
-          },
-          items: options.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(value: value, child: Text(value));
-          }).toList(),
         ),
       ),
     );

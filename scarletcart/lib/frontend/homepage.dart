@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:scarletcart/frontend/order_details_test.dart';
 import 'package:scarletcart/frontend/shopperview.dart';
 void main() {
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -163,6 +163,10 @@ class DriverButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+         Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const DriverOrderDetailsScreen(orderId: 'orderID_123')),
+          );
       },
       child: Container(
         width: 365.56,

@@ -33,9 +33,26 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 242, 255, 247),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50 * scaleFactor),
+        child: AppBar(
+          backgroundColor: const Color.fromARGB(255, 235, 253, 242),
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: const Color.fromARGB(255, 23, 74, 44),
+              size: 24 * scaleFactor,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          automaticallyImplyLeading: false,
+        ),
+      ),
       body: Stack(
         children: [
-          // 1. Content column
           SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -46,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       alignment: Alignment.topCenter,
                       child: Container(
                         width: screenSize.width,
-                        height: screenSize.height * (250.5 / refHeight), //Scaled to height
+                        height: screenSize.height * (200.5 / refHeight),
                         decoration: const BoxDecoration(
                           color: Color.fromARGB(255, 235, 253, 242),
                           border: Border(
@@ -60,10 +77,10 @@ class _SplashScreenState extends State<SplashScreen> {
                     Padding(
                       padding: EdgeInsets.only(
                         left: 28 * scaleFactor,
-                        top: 95 * scaleFactor,
+                        top: 45 * scaleFactor,
                       ),
                       child: Text(
-                        "Hey $name",
+                        "Hey, $name!",
                         style: TextStyle(
                           fontSize: 22 * (scaleFactor),
                           color: const Color.fromARGB(255, 23, 74, 44),
@@ -75,7 +92,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     Center(
                       child: Padding(
                         padding: EdgeInsets.only(
-                          top: 145 * scaleFactor, // Top padding
+                          top: 95 * scaleFactor, // Adjusted top padding
                         ),
                         child: Container(
                           width: 318 * scaleFactor, // Responsive width
@@ -215,7 +232,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   // Navigate to the HomePage when the "Go to Cart" button is tapped
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const OrderTracking()),
+                    MaterialPageRoute(builder: (context) => const CustomerOrderDetailsScreen(orderId: 'orderID_123')),
                   );
                 },
                 child: Container(
