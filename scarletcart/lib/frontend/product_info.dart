@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scarletcart/frontend/cart_page.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   const ProductDetailsPage({super.key});
@@ -15,63 +16,81 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     final double heightScale = screenSize.height / 852;
     final double scaleFactor =
         widthScale < heightScale ? widthScale : heightScale;
+    int cartItemCount = 3;
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 242, 255, 247),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 235, 253, 242),
         elevation: 0,
-        title: const Text(
-          'Product Details',
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-        // iconTheme: const IconThemeData(color: Colors.black),  // Removed this line
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
+          icon: Icon(
+            Icons.arrow_back,
+            color: const Color.fromARGB(255, 23, 74, 44),
+            size: 24 * scaleFactor,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16.0 * scaleFactor),
-            child: Stack(
-              alignment: Alignment.topRight,
-              children: [
-                const Icon(Icons.shopping_cart_outlined, color: Colors.black),
+        title: Text(
+          'Product Details',
+          style: TextStyle(
+            fontSize: 22 * (scaleFactor),
+            color: const Color.fromARGB(255, 23, 74, 44),
+            fontWeight: FontWeight.w600,
+            fontFamily: 'Outfit',
+          ),
+        ),
+        actions: <Widget>[
+          Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              IconButton(
+                icon: const Icon(
+                  Icons.shopping_cart,
+                  color: Color.fromARGB(255, 23, 74, 44),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const ShoppingCartScreen()), // Navigate to Page
+                  );
+                },
+                tooltip: 'Shopping cart',
+              ),
+              if (cartItemCount > 0)
                 Positioned(
-                  top: 0,
-                  right: 0,
+                  right: 8,
+                  top: 8,
                   child: Container(
-                    padding: EdgeInsets.all(2.0 * scaleFactor),
+                    padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       color: Colors.green,
-                      borderRadius: BorderRadius.circular(8.0 * scaleFactor),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 1),
                     ),
-                    constraints: BoxConstraints(
-                      minWidth: 16.0 * scaleFactor,
-                      minHeight: 16.0 * scaleFactor,
+                    constraints: const BoxConstraints(
+                      minWidth: 16,
+                      minHeight: 16,
                     ),
                     child: Text(
-                      '3',
-                      style: TextStyle(
+                      cartItemCount > 9 ? '9+' : '$cartItemCount',
+                      style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 10.0 * scaleFactor,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
                     ),
                   ),
                 ),
-              ],
-            ),
+            ],
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.0 * scaleFactor),
-          child: Container(
-            color: const Color.fromARGB(255, 23, 74, 44),
-            height: 1.0 * scaleFactor,
-          ),
-        ),
+        automaticallyImplyLeading: false,
       ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
@@ -137,14 +156,32 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.green,
+                                content: const Text('Item added to cart!'),
+                                duration: const Duration(
+                                    seconds: 3), // How long it stays
+                                action: SnackBarAction(
+                                  label: 'UNDO',
+                                  onPressed: () {
+                                    // Perform undo action
+                                  },
+                                ),
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green.shade50,
                             foregroundColor: Colors.black,
-                            padding: EdgeInsets.symmetric(horizontal: 32 * scaleFactor, vertical: 12 * scaleFactor),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 32 * scaleFactor,
+                                vertical: 12 * scaleFactor),
                             textStyle: TextStyle(fontSize: 16 * scaleFactor),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8 * scaleFactor),
+                              borderRadius:
+                                  BorderRadius.circular(8 * scaleFactor),
                             ),
                           ),
                           child: const Text('Add to Cart'),
@@ -155,10 +192,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
                             foregroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(horizontal: 32 * scaleFactor, vertical: 12 * scaleFactor),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 32 * scaleFactor,
+                                vertical: 12 * scaleFactor),
                             textStyle: TextStyle(fontSize: 16 * scaleFactor),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8 * scaleFactor),
+                              borderRadius:
+                                  BorderRadius.circular(8 * scaleFactor),
                             ),
                           ),
                           child: const Text('Buy Now'),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:scarletcart/frontend/order_details_test.dart';
 import 'package:scarletcart/frontend/shopperview.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -9,253 +11,187 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-          body: HomePage(),
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        fontFamily: 'Poppins',
       ),
+      home: const HomePage(), // Start with HomePage
     );
   }
 }
 
-class HomePage extends StatelessWidget {
+// Enum to represent the possible roles
+enum Role { none, delivery, customer }
+
+// --- HomePage converted to StatefulWidget ---
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 390,
-      height: 844,
-      clipBehavior: Clip.antiAlias,
-      decoration: const BoxDecoration(
-        color: Color(0xFFEBFDF2),
-      ),
-      child: const Stack(
-        children: [
-          Positioned(left: 7.50, top: -220, child: TopBar()),
-          Positioned(left: 7.50, top: 1030, child: BottomNavigationBarIndicator()),
-          Positioned(left: 12, top: 132, child: DriverButton()),
-          Positioned(left: 19, top: 464, child: ShopperButton()),
-        ],
-      ),
-    );
-  }
+  State<HomePage> createState() => _HomePageState();
 }
 
-class TopBar extends StatelessWidget {
-  const TopBar({super.key});
+class _HomePageState extends State<HomePage> {
+  // State variable to track the selected role
+  Role _selectedRole = Role.none; // Initially nothing is selected
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 375,
-      height: 44,
-      clipBehavior: Clip.antiAlias,
-      decoration: const BoxDecoration(),
-      child: Stack(
-        children: [
-          const Positioned(
-            left: 0,
-            top: 0,
-            child: SizedBox(width: 375, height: 30),
-          ),
-          const Positioned(
-            left: 292,
-            top: 16,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FlutterLogoContainer(width: 20, height: 14),
-                SizedBox(width: 4),
-                FlutterLogoContainer(width: 16, height: 14),
-                SizedBox(width: 4),
-                FlutterLogoContainer(width: 25, height: 14),
-              ],
-            ),
-          ),
-          const Positioned(
-            left: 298,
-            top: 8,
-            child: SizedBox(width: 6, height: 6),
-          ),
-          Positioned(
-            left: 21,
-            top: 12,
-            child: Container(
-              width: 54,
-              height: 21,
-              padding: const EdgeInsets.only(top: 3, left: 11, right: 10, bottom: 3),
-              clipBehavior: Clip.antiAlias,
-              decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Image(
+                height: 136,
+                width: 136,
+                image: AssetImage('assets/rumad_logo_b.png'), 
+                // Use the image from assets (ensure you have added it in pubspec.yaml
               ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(), // Removed the unnecessary Column
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class BottomNavigationBarIndicator extends StatelessWidget {
-  const BottomNavigationBarIndicator({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 375,
-      height: 34,
-      padding: const EdgeInsets.only(
-        top: 21,
-        left: 120,
-        right: 121,
-        bottom: 8,
-      ),
-      clipBehavior: Clip.antiAlias,
-      decoration: const BoxDecoration(),
-      child: const Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 134,
-            height: 5,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 134,
-                  height: 5,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                    ),
-                  ),
+              const SizedBox(height: 16),
+              const Text(
+                'Select your role',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
                 ),
-              ],
-            ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 40),
+
+              // Card 1: Delivery Partner
+              _RoleSelectionCard(
+                icon: Icons.local_shipping_outlined,
+                title: 'Delivery partner',
+                subtitle: 'Picks up and delivers requested items from stores to students',
+                // Check if this role is selected
+                isSelected: _selectedRole == Role.delivery,
+                onTap: () {
+                  // Update state and then navigate
+                  setState(() {
+                    _selectedRole = Role.delivery;
+                  });
+                  // Navigate after selection (optional: add delay if you want to see selection first)
+                   Navigator.push(
+                     context,
+                     MaterialPageRoute(builder: (context) => const DriverOrderDetailsScreen(orderId: 'orderID_123')),
+                   );
+                },
+              ),
+
+              const SizedBox(height: 24),
+
+              // Card 2: Customer
+              _RoleSelectionCard(
+                icon: Icons.groups_outlined,
+                title: 'Customer',
+                subtitle: 'Requests items they need from nearby stores',
+                // Check if this role is selected
+                isSelected: _selectedRole == Role.customer,
+                onTap: () {
+                  // Update state and then navigate
+                  setState(() {
+                    _selectedRole = Role.customer;
+                  });
+                   // Navigate after selection (optional: add delay if you want to see selection first)
+                   Navigator.push(
+                     context,
+                     MaterialPageRoute(builder: (context) => const SplashScreen()),
+                   );
+                },
+              ),
+              const Spacer(),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 }
 
-class DriverButton extends StatelessWidget {
-  const DriverButton({super.key});
+// --- Role Selection Card Widget (modified) ---
+class _RoleSelectionCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final bool isSelected; // Added parameter
+  final VoidCallback onTap;
+
+  // Define colors for selected and default states
+  static const Color selectedBackgroundColor = Color(0xFFEBFDF2);
+  static final Color selectedBorderColor = Colors.green.shade400;
+  static final Color selectedIconColor = Colors.green.shade700;
+
+  static const Color defaultBackgroundColor = Colors.white;
+  static final Color defaultBorderColor = Colors.grey.shade300;
+  static final Color defaultIconColor = Colors.grey.shade700;
+
+
+  const _RoleSelectionCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.isSelected, // Required now
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
+    // Determine colors based on selection state
+    final Color currentBackgroundColor = isSelected ? selectedBackgroundColor : defaultBackgroundColor;
+    final Color currentBorderColor = isSelected ? selectedBorderColor : defaultBorderColor;
+    final Color currentIconColor = isSelected ? selectedIconColor : defaultIconColor;
+
     return GestureDetector(
-      onTap: () {
-      },
+      onTap: onTap,
       child: Container(
-        width: 365.56,
-        height: 276,
-        padding: const EdgeInsets.only(left: 5, right: 4.56),
-        child: Row(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 28.0, horizontal: 20.0),
+        decoration: BoxDecoration(
+          // Use determined colors
+          color: currentBackgroundColor,
+          borderRadius: BorderRadius.circular(16.0),
+          border: Border.all(
+            color: currentBorderColor,
+            width: 1.5,
+          ),
+        ),
+        child: Column(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              child: DecoratedBox(
-                decoration: const BoxDecoration(
-                  color: Color(0xFF174A2C),
-                  borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Center(
-                    child: Text(
-                      'Driver',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white, fontFamily: 'Poppins', fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                ),
+            Icon(
+              icon,
+              size: 40.0,
+              color: currentIconColor, // Use determined color
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8.0),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 14.0,
+                color: Colors.grey.shade600,
+                height: 1.4,
+              ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class ShopperButton extends StatelessWidget {
-  const ShopperButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SplashScreen()),
-          );
-        // print('Shopper button tapped!');
-      },
-      child: SizedBox(
-        width: 352,
-        height: 276,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: DecoratedBox(
-                decoration: const BoxDecoration(
-                  color: Color(0xFFFBB8A1),
-                  borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Center(
-                    child: Text(
-                      'Shopper',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white, fontFamily: 'Poppins', fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class FlutterLogoContainer extends StatelessWidget {
-  final double width;
-  final double height;
-
-  const FlutterLogoContainer({super.key, required this.width, required this.height});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      height: height,
-      child: const FlutterLogo(),
     );
   }
 }

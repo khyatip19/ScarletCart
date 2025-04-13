@@ -15,12 +15,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart),
-          label: 'Shopper',
+          icon: Icon(Icons.home_outlined),
+          label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.local_shipping),
-          label: 'Driver',
+          icon: Icon(Icons.list_alt_outlined),
+          label: 'Orders',
         ),
       ],
       currentIndex: widget.selectedIndex,

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:scarletcart/frontend/cart_item.dart';
+import 'package:scarletcart/frontend/card_info.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
+  const ShoppingCartScreen({super.key});
+
   @override
   _ShoppingCartScreenState createState() => _ShoppingCartScreenState();
 }
@@ -18,14 +21,16 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   @override
   void initState() {
     super.initState();
-    cartItems = cartItems.map((item) => CartItem(
-        name: item.name,
-        price: item.price,
-        onRemove: (itemToRemove) {
-          setState(() {
-            cartItems.remove(itemToRemove);
-          });
-        })).toList();
+    cartItems = cartItems
+        .map((item) => CartItem(
+            name: item.name,
+            price: item.price,
+            onRemove: (itemToRemove) {
+              setState(() {
+                cartItems.remove(itemToRemove);
+              });
+            }))
+        .toList();
   }
 
   @override
@@ -83,7 +88,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              //TODO: Implement proceed to checkout functionality here
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddCardScreen()),
+              );
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
