@@ -1,5 +1,35 @@
 import 'package:flutter/material.dart';
+// Import the screen you navigate to from the cart icon
 import 'package:scarletcart/frontend/cart_page.dart';
+
+// --- Added Imports for Navigation Targets ---
+// Ensure these paths are correct for your project structure
+import 'package:scarletcart/frontend/profile.dart'; // Assuming ProfileScreen is here
+import 'package:scarletcart/frontend/orders_screen.dart'; // Assuming OrdersScreen is here
+// --- End Added Imports ---
+
+// --- Placeholder Screens (if not imported above) ---
+/*
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(appBar: AppBar(title: const Text("Profile")), body: const Center(child: Text("Profile")));
+  }
+}
+
+class OrdersScreen extends StatelessWidget {
+  const OrdersScreen({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(appBar: AppBar(title: const Text("Orders")), body: const Center(child: Text("Orders List")));
+  }
+}
+
+// ShoppingCartScreen should be imported from cart_page.dart
+*/
+// --- End Placeholder Screens ---
+
 
 class ProductDetailsPage extends StatefulWidget {
   const ProductDetailsPage({super.key});
@@ -9,14 +39,28 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  // Note: cartItemCount defined in build method for this example.
+  // For real apps, manage state higher up.
+
   @override
   Widget build(BuildContext context) {
+    // --- Scaling Factor Calculation ---
     final screenSize = MediaQuery.of(context).size;
-    final double widthScale = screenSize.width / 393;
-    final double heightScale = screenSize.height / 852;
+    const double refWidth = 393; // Reference width
+    const double refHeight = 852; // Reference height
+    final double widthScale = screenSize.width / refWidth;
+    final double heightScale = screenSize.height / refHeight;
     final double scaleFactor =
         widthScale < heightScale ? widthScale : heightScale;
-    int cartItemCount = 3;
+    // --- End Scaling ---
+
+    // --- Cart Item Count (Local for example) ---
+    int cartItemCount = 3; // Example value
+    // --- End Cart Item Count ---
+
+    // --- Icon Color ---
+    const Color iconColor = Color.fromARGB(255, 23, 74, 44);
+    // --- End Icon Color ---
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 242, 255, 247),
@@ -26,8 +70,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: const Color.fromARGB(255, 23, 74, 44),
-            size: 24 * scaleFactor,
+            color: iconColor, // Use defined color
+            size: 24 * scaleFactor, // Use scaleFactor
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -36,31 +80,62 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         title: Text(
           'Product Details',
           style: TextStyle(
-            fontSize: 22 * (scaleFactor),
-            color: const Color.fromARGB(255, 23, 74, 44),
-            fontWeight: FontWeight.w600,
+            fontSize: 20 * scaleFactor, // Use scaleFactor
+            color: iconColor, // Use defined color
+            fontWeight: FontWeight.w400,
             fontFamily: 'Outfit',
           ),
         ),
+        // ========== Added Actions ==========
         actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.person_outline,
+              color: iconColor, // Use defined color
+              size: 24 * scaleFactor, // Use scaleFactor
+            ),
+            tooltip: 'Profile',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.list_alt,
+              color: iconColor, // Use defined color
+              size: 24 * scaleFactor, // Use scaleFactor
+            ),
+            tooltip: 'My Orders',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const OrdersScreen()),
+              );
+            },
+          ),
           Stack(
             alignment: Alignment.center,
             children: <Widget>[
               IconButton(
                 icon: const Icon(
-                  Icons.shopping_cart,
-                  color: Color.fromARGB(255, 23, 74, 44),
+                  // Use outlined or solid based on preference
+                  Icons.shopping_cart_outlined,
+                  color: iconColor, // Use defined color
                 ),
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            const ShoppingCartScreen()), // Navigate to Page
+                            const ShoppingCartScreen()), // Navigate to Cart
                   );
                 },
                 tooltip: 'Shopping cart',
               ),
+              // Use the local cartItemCount variable
               if (cartItemCount > 0)
                 Positioned(
                   right: 8,
@@ -77,6 +152,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       minHeight: 16,
                     ),
                     child: Text(
+                      // Use the local cartItemCount variable
                       cartItemCount > 9 ? '9+' : '$cartItemCount',
                       style: const TextStyle(
                         color: Colors.white,
@@ -89,11 +165,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 ),
             ],
           ),
+          SizedBox(width: 8.0 * scaleFactor), // Add scaled padding
         ],
-        automaticallyImplyLeading: false,
+        // ========== End Added Actions ==========
+        // automaticallyImplyLeading: false, // Keep if you explicitly handle back button
       ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
+          // --- Main Body Content (Unchanged) ---
           return SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(
@@ -108,148 +187,192 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       child: Container(
                         width: 200 * scaleFactor,
                         height: 200 * scaleFactor,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
+                          // Use a border or placeholder image for better look
                           shape: BoxShape.circle,
-                          color: Colors.grey,
+                          color: Colors.grey.shade300, // Lighter grey
+                           border: Border.all(color: Colors.grey.shade400)
+                          // image: DecorationImage(image: AssetImage('your_image_path'), fit: BoxFit.cover) // Example
                         ),
-                        child: const Center(
-                          child: ColoredBox(
-                            color: Colors.grey,
-                          ),
-                        ),
+                        // Removed the inner ColoredBox, use Icon instead
+                        child: Icon(Icons.image_outlined, size: 80 * scaleFactor, color: Colors.grey.shade500),
                       ),
                     ),
                     SizedBox(height: 20 * scaleFactor),
                     Text(
-                      'Fresh Lemon',
+                      'Fresh Lemon', // TODO: Make this dynamic from product data
                       style: TextStyle(
                         fontSize: 24 * scaleFactor,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black87, // Slightly softer black
                       ),
                     ),
                     SizedBox(height: 8 * scaleFactor),
                     Text(
-                      '\$5.00/KG',
+                      '\$5.00/KG', // TODO: Make this dynamic
                       style: TextStyle(
                         fontSize: 18 * scaleFactor,
-                        color: Colors.grey[700],
+                        color: Colors.teal.shade700, // Theme color
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     SizedBox(height: 16 * scaleFactor),
                     Row(
                       children: [
+                        // TODO: Make star rating dynamic
                         for (int i = 0; i < 5; i++)
                           Icon(
-                            Icons.star,
+                            i < 4 ? Icons.star : Icons.star_border, // Example dynamic stars
                             color: Colors.amber,
                             size: 20 * scaleFactor,
                           ),
                         SizedBox(width: 8 * scaleFactor),
                         Text(
-                          '110 Reviews',
-                          style: TextStyle(fontSize: 16 * scaleFactor),
+                          '110 Reviews', // TODO: Make this dynamic
+                          style: TextStyle(fontSize: 16 * scaleFactor, color: Colors.grey.shade600),
                         ),
                       ],
                     ),
                     SizedBox(height: 24 * scaleFactor),
+                    // --- Buttons Row ---
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      // Consider spaceEvenly or other distribution if needed
                       children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                backgroundColor: Colors.green,
-                                content: const Text('Item added to cart!'),
-                                duration: const Duration(
-                                    seconds: 3), // How long it stays
-                                action: SnackBarAction(
-                                  label: 'UNDO',
-                                  onPressed: () {
-                                    // Perform undo action
-                                  },
+                        Expanded( // Allow buttons to take space
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // TODO: Implement Add to Cart logic
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  backgroundColor: Colors.green,
+                                  content: const Text('Item added to cart!'),
+                                  duration: const Duration(seconds: 2), // Shorter duration
+                                  // Removed UNDO for simplicity, add back if needed
+                                  // action: SnackBarAction(
+                                  //   label: 'UNDO',
+                                  //   textColor: Colors.yellow,
+                                  //   onPressed: () {
+                                  //     // TODO: Perform undo action
+                                  //   },
+                                  // ),
                                 ),
+                              );
+                               // Update cart count (example - needs real state management)
+                               setState(() {
+                                 // This won't work correctly as cartItemCount is local to build
+                                 // Need actual state management solution here
+                               });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFEBFDF2), // Lighter theme color
+                              foregroundColor: Color(0xFF6CC48E), // Darker theme text
+                              padding: EdgeInsets.symmetric(
+                                  //horizontal: 32 * scaleFactor, // Use symmetric padding
+                                  vertical: 14 * scaleFactor), // Slightly taller
+                              textStyle: TextStyle(fontSize: 16 * scaleFactor, fontWeight: FontWeight.w600),
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(8 * scaleFactor),
+                                    side: BorderSide(color: Color(0xFF6CC48E)) // Add subtle border
                               ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green.shade50,
-                            foregroundColor: Colors.black,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 32 * scaleFactor,
-                                vertical: 12 * scaleFactor),
-                            textStyle: TextStyle(fontSize: 16 * scaleFactor),
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(8 * scaleFactor),
+                              elevation: 1,
                             ),
+                            child: const Text('Add to Cart'),
                           ),
-                          child: const Text('Add to Cart'),
                         ),
                         SizedBox(width: 16 * scaleFactor),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            foregroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 32 * scaleFactor,
-                                vertical: 12 * scaleFactor),
-                            textStyle: TextStyle(fontSize: 16 * scaleFactor),
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(8 * scaleFactor),
+                        Expanded( // Allow buttons to take space
+                          child: ElevatedButton(
+                            onPressed: () {
+                               // TODO: Implement Buy Now logic (e.g., navigate to checkout)
+                               Navigator.push(context, MaterialPageRoute(builder: (context) => const ShoppingCartScreen())); // Example navigation
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF6CC48E), // Main theme color
+                              foregroundColor: Color(0xFFEBFDF2),
+                              padding: EdgeInsets.symmetric(
+                                  //horizontal: 32 * scaleFactor,
+                                  vertical: 14 * scaleFactor),
+                              textStyle: TextStyle(fontSize: 16 * scaleFactor, fontWeight: FontWeight.w600),
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(8 * scaleFactor),
+                              ),
+                               elevation: 2,
                             ),
+                            child: const Text('Buy Now'),
                           ),
-                          child: const Text('Buy Now'),
                         ),
                       ],
                     ),
+                    // --- End Buttons Row ---
                     SizedBox(height: 32 * scaleFactor),
                     Text(
                       'Details',
                       style: TextStyle(
                         fontSize: 20 * scaleFactor,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600, // Bolder
+                         color: Colors.black87,
                       ),
                     ),
                     SizedBox(height: 8 * scaleFactor),
                     Text(
-                      'Lemons are Good for You, vel scelerisque nisl consectetur et. Nullam quis risus eget urna mollis ornare vel eu leo.',
+                      // TODO: Make this dynamic
+                      'Lemons are known for their high vitamin C content. Grown organically without pesticides. Perfect for drinks, cooking, and baking.',
                       style: TextStyle(
                         fontSize: 16 * scaleFactor,
-                        color: Colors.grey[600],
+                        color: Colors.grey[700], // Slightly darker grey
+                         height: 1.4, // Improve line spacing
                       ),
                     ),
                     SizedBox(height: 24 * scaleFactor),
-                    ExpansionTile(
-                      title: Text(
-                        'Nutritional facts',
-                        style: TextStyle(fontSize: 18 * scaleFactor),
-                      ),
-                      children: const <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Text(
-                            'Nutritional information goes here...',
+                    // --- Expansion Tiles ---
+                    Theme( // Use Theme to remove default dividers if desired
+                      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                      child: Column(
+                        children: [
+                           ExpansionTile(
+                            tilePadding: EdgeInsets.zero, // Remove default padding
+                            title: Text(
+                              'Nutritional facts',
+                              style: TextStyle(fontSize: 18 * scaleFactor, fontWeight: FontWeight.w500),
+                            ),
+                             childrenPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Add padding inside
+                             initiallyExpanded: false, // Start closed
+                            children: <Widget>[
+                              // TODO: Add actual nutritional info
+                              Text(
+                                'Serving Size: 1 Lemon (approx. 58g)\nCalories: 17\nVitamin C: 30.7mg (51% DV)\n...',
+                                style: TextStyle(fontSize: 15 * scaleFactor, color: Colors.grey.shade700),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    ExpansionTile(
-                      title: Text(
-                        'Reviews',
-                        style: TextStyle(fontSize: 18 * scaleFactor),
-                      ),
-                      children: const <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Text(
-                            'Reviews content goes here...',
+                          const Divider(height: 1), // Add custom divider
+                           ExpansionTile(
+                             tilePadding: EdgeInsets.zero,
+                            title: Text(
+                              'Reviews (110)', // Show count in title
+                              style: TextStyle(fontSize: 18 * scaleFactor, fontWeight: FontWeight.w500),
+                            ),
+                             childrenPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                            children: const <Widget>[
+                              ListTile(
+                                leading: CircleAvatar(child: Text("A")),
+                                title: Text("Great quality lemons!"),
+                                subtitle: Text("Very fresh and juicy."),
+                              ),
+                               ListTile(
+                                leading: CircleAvatar(child: Text("B")),
+                                title: Text("Good value"),
+                                subtitle: Text("Happy with the purchase."),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
+                     // --- End Expansion Tiles ---
+                      SizedBox(height: 20 * scaleFactor), // Add padding at the bottom
                   ],
                 ),
               ),

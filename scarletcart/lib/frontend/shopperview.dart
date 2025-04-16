@@ -4,6 +4,8 @@ import 'shopper_home_dropdown.dart'; // dropdown for pickup locations
 import 'package:scarletcart/frontend/order_tracking.dart'; // Import HomePage
 import 'package:scarletcart/frontend/navbar.dart';
 import 'package:scarletcart/frontend/cart_page.dart';
+import 'package:scarletcart/frontend/orders_screen.dart';
+import 'package:scarletcart/frontend/profile.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -61,12 +63,39 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
           actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.person_outline,
+                color: const Color.fromARGB(255, 23, 74, 44),
+                size: 24 * scaleFactor,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                );
+              },
+            ),
+
+            IconButton(
+              icon: Icon(
+                Icons.list_alt,
+                color: const Color.fromARGB(255, 23, 74, 44),
+                size: 24 * scaleFactor,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const OrdersScreen()),
+                );
+              },
+            ),
             Stack(
               alignment: Alignment.center,
               children: <Widget>[
                 IconButton(
                   icon: const Icon(
-                    Icons.shopping_cart,
+                    Icons.shopping_cart_outlined,
                     color: Color.fromARGB(255, 23, 74, 44),
                   ),
                   onPressed: () {
@@ -283,6 +312,18 @@ class _SplashScreenState extends State<SplashScreen> {
                             ),
                           ],
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Expanded(
+                              child: FrequentPurchasedCard(),
+                            ),
+                            SizedBox(width: 10 * scaleFactor),
+                            const Expanded(
+                              child: FrequentPurchasedCard(),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -294,49 +335,49 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
           // 2. Button area: This part
-          Positioned(
-            bottom: 15 * scaleFactor, // Distance from the bottom
-            left: 0,
-            right: 0, // This makes the container stretch across
-            child: Center(
-              child: GestureDetector(
-                onTap: () {
-                  // Navigate to the HomePage when the "Go to Cart" button is tapped
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CustomerOrderDetailsScreen(
-                            orderId: 'orderID_123')),
-                  );
-                },
-                child: Container(
-                  width: 327 * scaleFactor,
-                  height: 43.16 * scaleFactor,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF6CC48E),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Go to Cart',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22 * scaleFactor,
-                        fontFamily: 'Outfit',
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   bottom: 15 * scaleFactor, // Distance from the bottom
+          //   left: 0,
+          //   right: 0, // This makes the container stretch across
+          //   child: Center(
+          //     child: GestureDetector(
+          //       onTap: () {
+          //         // Navigate to the HomePage when the "Go to Cart" button is tapped
+          //         Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //               builder: (context) => const CustomerOrderDetailsScreen(
+          //                   orderId: 'orderID_123')),
+          //         );
+          //       },
+          //       child: Container(
+          //         width: 327 * scaleFactor,
+          //         height: 43.16 * scaleFactor,
+          //         decoration: ShapeDecoration(
+          //           color: const Color(0xFF6CC48E),
+          //           shape: RoundedRectangleBorder(
+          //             borderRadius: BorderRadius.circular(20),
+          //           ),
+          //         ),
+          //         child: Center(
+          //           child: Text(
+          //             'Go to Cart',
+          //             style: TextStyle(
+          //               color: Colors.white,
+          //               fontSize: 22 * scaleFactor,
+          //               fontFamily: 'Outfit',
+          //               fontWeight: FontWeight.w400,
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
-      bottomNavigationBar: BottomNavBar(
-          selectedIndex: _selectedIndex, onItemTapped: _onItemTapped),
+      // bottomNavigationBar: BottomNavBar(
+      //     selectedIndex: _selectedIndex, onItemTapped: _onItemTapped),
     );
   }
 }

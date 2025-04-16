@@ -70,6 +70,8 @@ flutter:
     - assets/google-logo.png
     - assets/rumad-home.png
     - assets/rumad_logo_b.png
+    - assets/settings.png
+    - assets/google_map.webp
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

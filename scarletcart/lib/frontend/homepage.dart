@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scarletcart/frontend/order_details_test.dart';
 import 'package:scarletcart/frontend/shopperview.dart';
+import 'package:scarletcart/frontend/nearby_requests.dart';
 
 void main() {
   runApp(const MyApp());
@@ -78,10 +79,14 @@ class _HomePageState extends State<HomePage> {
                   });
                   // Navigate after selection (optional: add delay if you want to see selection first)
                    Navigator.push(
-                     context,
-                     MaterialPageRoute(builder: (context) => const DriverOrderDetailsScreen(orderId: 'orderID_123')),
-                   );
-                },
+     context,
+     MaterialPageRoute(
+       // Navigate to the OrderTracking screen widget directly
+       builder: (context) => const OrderConfirmationScreen(),
+     ),
+   );
+   // **** End of change ****
+ },
               ),
 
               const SizedBox(height: 24),
