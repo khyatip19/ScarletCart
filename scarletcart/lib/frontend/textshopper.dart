@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
 
-class text_shopper extends StatelessWidget {
-  const text_shopper({super.key});
+class TextShopper extends StatelessWidget {
+  const TextShopper({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +50,6 @@ class OrderConfirmation extends StatelessWidget {
       fontSize: 24 * scaleFactor, 
       fontFamily: 'Manrope',
       fontWeight: FontWeight.bold, 
-    );
-
-   final bodyTextStyle = TextStyle(
-      color: const Color(0xFF333333), 
-      fontSize: 15 * scaleFactor, 
-      fontFamily: 'Manrope',
-      fontWeight: FontWeight.w500, 
-      height: 1.4, 
     );
 
      final detailLabelStyle = TextStyle(

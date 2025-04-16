@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scarletcart/frontend/frequent_purchased_card.dart';
-import 'shopper_home_dropdown.dart'; // dropdown for pickup locations
-import 'package:scarletcart/frontend/order_tracking.dart'; // Import HomePage
+import 'shopper_home_dropdown.dart'; 
+import 'package:scarletcart/frontend/order_tracking.dart'; 
 import 'package:scarletcart/frontend/navbar.dart';
 
 class SplashScreen extends StatefulWidget {

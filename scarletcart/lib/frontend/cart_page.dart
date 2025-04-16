@@ -5,10 +5,10 @@ class ShoppingCartScreen extends StatefulWidget {
   const ShoppingCartScreen({super.key});
 
   @override
-  _ShoppingCartScreenState createState() => _ShoppingCartScreenState();
+  ShoppingCartScreenState createState() => ShoppingCartScreenState();
 }
 
-class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
+class ShoppingCartScreenState extends State<ShoppingCartScreen> {
   List<CartItem> cartItems = [
     CartItem(name: "Bananas", price: 7.90, onRemove: (item) {}),
     CartItem(name: "Package 01", price: 7.90, onRemove: (item) {}),
@@ -85,7 +85,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
-              //TODO: Implement proceed to checkout functionality here
+              //todo: Implement proceed to checkout functionality here
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
